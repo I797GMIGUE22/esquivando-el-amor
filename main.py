@@ -3,7 +3,7 @@ class Contador():
     def __init__(self, initial = 0):
         self.numero = initial
     def add(self):
-        self.numero += 1
+        self.numero += 10
     def showNumber(self):
         return self.numero;
 class CrearAsteroid():
@@ -12,7 +12,7 @@ class CrearAsteroid():
         self.roca = game.create_sprite(self.x, 0)
     def bajando(self):
         if (self.roca.y() != 4 ):
-            basic.pause(200 - counter.showNumber())
+            basic.pause(200 - counter.showNumber());
             self.roca.set(LedSpriteProperty.Y, self.roca.y() + 1)
         elif (self.roca.y() == 4):
             basic.pause(100)
@@ -35,7 +35,7 @@ input.on_button_pressed(Button.A, moveLeft)
 
 def asteroides():
     asteroid = CrearAsteroid()
-    basic.pause(400)
+    basic.pause(650 - counter.showNumber())
     def loopAsteroides():
         asteroid.bajando()
         asteroid.colisiones()

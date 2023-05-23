@@ -6,7 +6,7 @@ class Contador {
     }
     
     public add() {
-        this.numero += 1
+        this.numero += 10
     }
     
     public showNumber(): number {
@@ -55,7 +55,7 @@ input.onButtonPressed(Button.A, function moveLeft() {
 })
 function asteroides() {
     let asteroid = new CrearAsteroid()
-    basic.pause(400)
+    basic.pause(650 - counter.showNumber())
     loops.everyInterval(0, function loopAsteroides() {
         asteroid.bajando()
         asteroid.colisiones()
