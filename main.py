@@ -1,25 +1,29 @@
 player = game.createSprite(2, 4)
+class Contador():
+    def __init__(self, initial = 0):
+        self.numero = initial
+    def add(self):
+        self.numero += 1
+    def showNumber(self):
+        return self.numero;
 class CrearAsteroid():
     def __init__(self):
         self.x = randint(player.x() - 1, player.x() + 1) or randint(0, 4)
         self.roca = game.create_sprite(self.x, 0)
     def bajando(self):
         if (self.roca.y() != 4 ):
-            basic.pause(100)
+            basic.pause(200 - counter.showNumber())
             self.roca.set(LedSpriteProperty.Y, self.roca.y() + 1)
         elif (self.roca.y() == 4):
             basic.pause(100)
-            self.roca.set(LedSpriteProperty.Y, 0)
-            self.roca.set(LedSpriteProperty.X, 0)
             self.roca.delete()
     def colisiones(self):
         if (player.is_touching(self.roca)):
             music.stop_melody(MelodyStopOptions.ALL)
-            game.score()
             game.game_over()
         else:
             return
-
+counter = Contador();
 def moveRight():
     player.move(1)
 input.onButtonPressed(Button.B, moveRight)
@@ -36,11 +40,10 @@ def asteroides():
         asteroid.bajando()
         asteroid.colisiones()
     loops.every_interval(0, loopAsteroides)
-    
-loops.every_interval(25, asteroides)
 
 def sumarContador():
     if (game.is_game_over() != True):
+        counter.add()
         game.add_score(1)
 loops.every_interval(2000, sumarContador)
 
@@ -58,3 +61,6 @@ def musica():
         music.play_melody("C E G D A E G D ", 170)
 loops.every_interval(0, musica)
 
+def on_forever():
+    asteroides();
+basic.forever(on_forever)

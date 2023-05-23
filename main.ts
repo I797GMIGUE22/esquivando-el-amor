@@ -1,4 +1,20 @@
 let player = game.createSprite(2, 4)
+class Contador {
+    numero: number
+    constructor(initial: number = 0) {
+        this.numero = initial
+    }
+    
+    public add() {
+        this.numero += 1
+    }
+    
+    public showNumber(): number {
+        return this.numero
+    }
+    
+}
+
 class CrearAsteroid {
     x: number
     roca: game.LedSprite
@@ -9,12 +25,10 @@ class CrearAsteroid {
     
     public bajando() {
         if (this.roca.y() != 4) {
-            basic.pause(100)
+            basic.pause(200 - counter.showNumber())
             this.roca.set(LedSpriteProperty.Y, this.roca.y() + 1)
         } else if (this.roca.y() == 4) {
             basic.pause(100)
-            this.roca.set(LedSpriteProperty.Y, 0)
-            this.roca.set(LedSpriteProperty.X, 0)
             this.roca.delete()
         }
         
@@ -23,7 +37,6 @@ class CrearAsteroid {
     public colisiones() {
         if (player.isTouching(this.roca)) {
             music.stopMelody(MelodyStopOptions.All)
-            game.score()
             game.gameOver()
         } else {
             return
@@ -33,22 +46,25 @@ class CrearAsteroid {
     
 }
 
+let counter = new Contador()
 input.onButtonPressed(Button.B, function moveRight() {
     player.move(1)
 })
 input.onButtonPressed(Button.A, function moveLeft() {
     player.move(-1)
 })
-loops.everyInterval(25, function asteroides() {
+function asteroides() {
     let asteroid = new CrearAsteroid()
     basic.pause(400)
     loops.everyInterval(0, function loopAsteroides() {
         asteroid.bajando()
         asteroid.colisiones()
     })
-})
+}
+
 loops.everyInterval(2000, function sumarContador() {
     if (game.isGameOver() != true) {
+        counter.add()
         game.addScore(1)
     }
     
@@ -68,4 +84,7 @@ loops.everyInterval(0, function musica() {
         music.playMelody("C E G D A E G D ", 170)
     }
     
+})
+basic.forever(function on_forever() {
+    asteroides()
 })
